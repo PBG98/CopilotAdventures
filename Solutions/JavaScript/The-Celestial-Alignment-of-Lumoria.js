@@ -62,7 +62,15 @@ function generateAlignmentSVG(planets, options = {}) {
         const orbitRadius = 80 + i * 60;
         const px = starX + Math.cos(angle) * orbitRadius;
         const py = starY + Math.sin(angle) * orbitRadius;
+        // 행성 본체
         svg += `<circle cx="${px}" cy="${py}" r="${p.size/1000}" fill="${p.color||'#8ecae6'}" />`;
+        // 투영 그림자 (행성 뒤쪽에 어두운 타원)
+        svg += `<ellipse cx="${px + p.size/1000 + 10}" cy="${py}" rx="${p.size/1200}" ry="${p.size/2000}" fill="rgba(30,30,30,0.3)" />`;
+        // 반사광 (행성 앞쪽에 밝은 원)
+        svg += `<circle cx="${px - p.size/1200}" cy="${py - p.size/1200}" r="${p.size/2500}" fill="rgba(255,255,200,0.5)" />`;
+        // 대기 효과 (행성 주위에 흐릿한 외곽선)
+        svg += `<circle cx="${px}" cy="${py}" r="${p.size/900}" fill="none" stroke="rgba(100,180,255,0.3)" stroke-width="3" />`;
+        // 행성 이름
         svg += `<text x="${px + 10}" y="${py}" font-size="14">${p.name}</text>`;
     });
     svg += `</svg>`;
